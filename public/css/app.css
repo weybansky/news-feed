@@ -13972,7 +13972,44 @@ a.text-dark:focus {
   }
 }
 
-select#category {
-  border-radius: 0px !important;
+body {
+  background: #1f1f1f;
+}
+
+.btn-color {
+  background-color: #4f98e0 !important;
+  color: #eee;
+}
+
+nav.navbar {
+  margin-bottom: 15px;
+  background-color: #4f98e0 !important;
+}
+
+.card img:hover {
+  opacity: 0.5;
+  -webkit-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+}
+
+.card {
+  margin-bottom: 10px;
+}
+
+::-webkit-input-placeholder {
+  color: #aaa !important;
+}
+
+::-ms-input-placeholder {
+  color: #aaa !important;
+}
+
+::placeholder {
+  color: #aaa !important;
+}
+
+section {
+  padding: 10px 0px;
+  margin: 5px 0px;
 }
 

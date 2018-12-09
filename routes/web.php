@@ -13,39 +13,28 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index');
 
 
 // ========================
-
-
-
 // Websites
 // Adding new websites
-Route::get('add-new-website', 'WebsiteController@create');
-Route::post('add-new-website', 'WebsiteController@store');
-
-Route::get('edit-website', 'WebsiteController@edit');
-Route::patch('edit-website', 'WebsiteController@update');
-
-Route::delete('delete-website', 'WebsiteController@destroy');
-
-Route::get('all-websites', 'WebsiteController@index');
-
 
 // =========================
+Route::get('websites', 'WebsiteController@index');
+Route::post('websites', 'WebsiteController@store');
+
+Route::patch('websites', 'WebsiteController@update');
+Route::delete('websites', 'WebsiteController@destroy');
+
 
 
 // Working on my templates
 Route::get('template', function () {
     return view('tests.template');
 });
+
 
 // Working with News Feed 
 Route::get('/newsfeed', function () {
@@ -68,6 +57,7 @@ Route::get('/newsfeed', function () {
 
 	return view('tests.rss', compact('items'));
 });
+
 Route::get('axios', function () {
 	return view('tests.axios');
 });
@@ -77,30 +67,31 @@ Route::post('axios', function () {
 	return response()->json(array('websites' => $websites), 200);
 });
 
+
 Route::get('feed/add-new-entry', function () {
-	$feeds = \App\Website::select(['id', 'feed_url', 'type_of_feed'])->orderBy('id')->get();
+	$websites = \App\Website::select(['id', 'feed_url', 'type_of_feed'])->orderBy('id')->get();
 	// go through all feed urls 
-	foreach ($feeds as $feed) {
+	foreach ($websites as $website) {
 		// check feed type and use the required function
 		// return $feed;
-		if ($feed->type_of_feed == 'rss') {
+		if ($website->type_of_feed == 'rss') {
 			try {
-				$rss = \Feed::loadRss($feed->feed_url);
+				$rss = \Feed::loadRss($website->feed_url);
 				$items = $rss->item;
 				dd($rss);
 
 			} catch (Exception $e) {
-				return 'Not Working Rss';
+				return 'RSS Feed Not Working';
 				abort(500);
 			}
-		}elseif ($feed->type_of_feed == 'atom') {
+		}elseif ($website->type_of_feed == 'atom') {
 			try {
-				$atom = \Feed::loadAtom($feed->feed_url);
+				$atom = \Feed::loadAtom($website->feed_url);
 				$entries = $atom->entry;
 				dd($atom);
 				
 			} catch (Exception $e) {
-				return 'Not working Atom';
+				return 'Atom Feed Not working';
 				abort(500);
 			}
 		}

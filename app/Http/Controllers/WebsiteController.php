@@ -40,13 +40,14 @@ class WebsiteController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'name'          => 'required|min:2',
             'category_id'   => 'required',
-            'main_url'      => 'required',
-            'icon'          => 'required',
-            'feed_name'     => 'required',
-            'feed_url'      => 'required',
+            'name'          => 'required|min:2',
+            'main_url'      => 'required|url',
+            'feed_name'     => 'required|min:2',
+            'feed_url'      => 'required|url',
             'type_of_feed'  => 'required',
+
+            'icon'          => 'nullable',
         ]);
 
 

@@ -17,11 +17,20 @@ class CreateFeedsTable extends Migration
             $table->increments('id');
             $table->integer('website_id');
             $table->string('category_id');
-            $table->string('post_picture');
-            $table->string('post-title');
+
+            $table->string('post_title');
             $table->string('post_url');
-            $table->string('post_description')->nullable();
-            // $table->
+            $table->dateTime('created_at');
+
+            // guid
+            $table->string('post_id');
+            
+            $table->string('post_content')->nullable();
+            // dc:creator
+            $table->string('post_author');
+
+            $table->string('post_picture')->nullable();
+            
             $table->timestamps();
         });
     }

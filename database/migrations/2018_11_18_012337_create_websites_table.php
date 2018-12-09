@@ -18,11 +18,10 @@ class CreateWebsitesTable extends Migration
             $table->integer('category_id');
             $table->string('name');
             $table->string('main_url');
-            $table->string('feed_name');
-            $table->string('feed_url');
-            $table->string('type_of_feed');
-
-
+            $table->string('icon')->nullable();
+            $table->string('feed_name')->nullable();
+            $table->string('feed_url')->unique();
+            $table->enum('type_of_feed', ['rss', 'atom', 'other'])->default('other');
             $table->timestamps();
         });
     }

@@ -18,5 +18,12 @@
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "again": "0.0.1",
+        "ajv": "^6.5.5",
+        "animate.css": "^3.7.0",
+        "imagemin": "^6.0.0",
+        "webpack": "^3.11.0"
     }
 }

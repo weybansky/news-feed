@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Website;
+use App\Category;
 use Illuminate\Http\Request;
 
-class WebsiteController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,7 @@ class WebsiteController extends Controller
      */
     public function index()
     {
-        $websites = Website::latest()->get();
-
-        // return $websites;
-
-        return view('website.index', compact('websites'));
+        //
     }
 
     /**
@@ -28,7 +24,7 @@ class WebsiteController extends Controller
      */
     public function create()
     {
-        return view('website.create');
+        //
     }
 
     /**
@@ -39,26 +35,16 @@ class WebsiteController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(request(), [
-            'name'          => 'required|min:2',
-            'category_id'   => 'required',
-            'main_url'      => 'required',
-            'icon'          => 'required',
-            'feed_name'     => 'required',
-            'feed_url'      => 'required',
-            'type_of_feed'  => 'required',
-        ]);
-
-
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Website  $website
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Website $website)
+    public function show(Category $category)
     {
         //
     }
@@ -66,10 +52,10 @@ class WebsiteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Website  $website
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Website $website)
+    public function edit(Category $category)
     {
         //
     }
@@ -78,10 +64,10 @@ class WebsiteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Website  $website
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Website $website)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -89,10 +75,10 @@ class WebsiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Website  $website
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Website $website)
+    public function destroy(Category $category)
     {
         //
     }

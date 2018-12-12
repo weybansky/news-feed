@@ -20,3 +20,27 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 const app = new Vue({
     el: '#app'
 });
+
+function createWebsite(){
+	let category   		= document.getElementsByName('name');
+	// let name          = 
+	// let main_url      = 
+	// let feed_name     = 
+	// let feed_url      = 
+	// let type_of_feed  = 
+	// let icon          = 
+
+	let formData = new FormData();
+	formData.append('name', 'Weybansky');
+
+
+	axios.post('/axios')
+	    .then(function (response) {
+	        document.getElementById('data').innerHTML = JSON.stringify(response.data.websites);
+	        console.log(response.data);
+	    })
+	    .catch(function (error) {
+	        document.getElementById('data').innerHTML = error;
+	        console.log(error);
+	    })
+}

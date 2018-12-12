@@ -20,7 +20,7 @@ class CreateFeedsTable extends Migration
 
             $table->string('post_title');
             $table->string('post_url');
-            $table->dateTime('created_at');
+            $table->dateTime('pub_date');
 
             // guid
             $table->string('post_id');

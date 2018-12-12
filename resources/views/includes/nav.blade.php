@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark animated fadeInDown">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark animated fadeInDown" style="z-index: 1000 !important;">
   <div class="container">
     <a class="navbar-brand" href="#">{{ env('APP_NAME')}}</a>
 
@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-              <a class="nav-link" href="{{ url('websites') }}">Feed</a>
+              <a class="nav-link" href="{{ url('feed') }}">Feed</a>
           </li>
           <li class="nav-item">
               <a class="nav-link" href="{{ url('websites') }}">Websites</a>
@@ -20,7 +20,7 @@
                 <i class="fa fa-user-times"></i>
               @else
                 <i class="fa fa-user-check"></i>
-                {{ Auth::user()->email }}
+                {{ Auth::user()->name }}
               @endguest
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -46,15 +46,16 @@
             </div>
           </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
+      <form class="form-inline my-2 my-lg-0" method="GET" action="">
           <select name="category" id="category" class="form-control mr-sm-2">
               <option value="select">-- Select Category --</option>
-              <option value="technology">Technology</option>
-              <option value="technology">Technology</option>
-              <option value="technology">Technology</option>
-              <option value="technology">Technology</option>
+              @isset($categories)
+                @foreach($categories as $category)
+                  <option value="{{ $category->id }}">{{ ucfirst($category->name) }}</option>
+                @endforeach
+              @endisset
           </select>
-          <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Select</button>
       </form>
     </div>
   </div>

@@ -13908,8 +13908,29 @@ window.Vue = __webpack_require__(36);
 Vue.component('example-component', __webpack_require__(39));
 
 var app = new Vue({
-  el: '#app'
+	el: '#app'
 });
+
+function createWebsite() {
+	var category = document.getElementsByName('name');
+	// let name          = 
+	// let main_url      = 
+	// let feed_name     = 
+	// let feed_url      = 
+	// let type_of_feed  = 
+	// let icon          = 
+
+	var formData = new FormData();
+	formData.append('name', 'Weybansky');
+
+	axios.post('/axios').then(function (response) {
+		document.getElementById('data').innerHTML = JSON.stringify(response.data.websites);
+		console.log(response.data);
+	}).catch(function (error) {
+		document.getElementById('data').innerHTML = error;
+		console.log(error);
+	});
+}
 
 /***/ }),
 /* 13 */

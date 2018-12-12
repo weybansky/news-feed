@@ -23,10 +23,13 @@ Route::get('/', 'HomeController@index');
 
 // =========================
 Route::get('websites', 'WebsiteController@index');
+Route::get('websites/add', 'WebsiteController@create');
 Route::post('websites', 'WebsiteController@store');
+Route::get('websites/{website}/edit', 'WebsiteController@edit');
+Route::patch('websites/{website}', 'WebsiteController@update');
+Route::delete('websites/{website}', 'WebsiteController@destroy');
+Route::get('websites/{website}/feed', 'WebsiteController@show'); // display feed
 
-Route::patch('websites', 'WebsiteController@update');
-Route::delete('websites', 'WebsiteController@destroy');
 
 
 

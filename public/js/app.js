@@ -13888,6 +13888,9 @@ module.exports = __webpack_require__(43);
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -13907,30 +13910,122 @@ window.Vue = __webpack_require__(36);
 
 Vue.component('example-component', __webpack_require__(39));
 
-var app = new Vue({
-	el: '#app'
+// Classes
+
+var Errors = function () {
+	function Errors() {
+		_classCallCheck(this, Errors);
+
+		this.errors = {};
+	}
+
+	_createClass(Errors, [{
+		key: 'get',
+		value: function get(field) {
+			if (this.errors[field]) {
+				return this.errors[field][0];
+			}
+		}
+	}, {
+		key: 'clear',
+		value: function clear(field) {
+			delete this.errors[field];
+		}
+	}, {
+		key: 'record',
+		value: function record(errors) {
+			this.errors = errors;
+		}
+	}]);
+
+	return Errors;
+}();
+
+var category = new Vue({
+	el: '#addCategory',
+
+	data: {
+		categoryName: '',
+		categoryDescription: '',
+		errors: new Errors()
+
+	},
+
+	methods: {
+		addNewCategory: function addNewCategory() {
+			var _this = this;
+
+			axios.post('category', {
+				name: this.categoryName,
+				description: this.categoryDescription
+			}).then(function (response) {
+				console.log(response.data);
+			}).catch(function (error) {
+				_this.errors.record(error.response.data.errors);
+				console.log(error.response.data.errors);
+			});
+		}
+	}
+
 });
 
-function createWebsite() {
-	var category = document.getElementsByName('name');
-	// let name          = 
-	// let main_url      = 
-	// let feed_name     = 
-	// let feed_url      = 
-	// let type_of_feed  = 
-	// let icon          = 
+Vue.component('category', {
+	props: ['name', 'description', 'id'],
 
-	var formData = new FormData();
-	formData.append('name', 'Weybansky');
+	computed: {
+		feedUrl: function feedUrl() {
+			return "category/" + this.id + "/feed";
+		},
+		deleteUrl: function deleteUrl() {
+			return "category/" + this.id;
+		}
+	},
 
-	axios.post('/axios').then(function (response) {
-		document.getElementById('data').innerHTML = JSON.stringify(response.data.websites);
-		console.log(response.data);
-	}).catch(function (error) {
-		document.getElementById('data').innerHTML = error;
-		console.log(error);
-	});
-}
+	methods: {
+		deleteCategory: function deleteCategory() {
+			alert(this.id);
+			axios.delete(this.deleteUrl).then(function (response) {
+				//console output
+				console.log(response.data);
+				// fire a delete event => remove the item from the array
+				// $emit('delete');
+			}).catch(function (error) {
+				console.log(error.response.data);
+				alert(error.response.data.message);
+			});
+		}
+	},
+
+	template: '\n\t  <div class="card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated fadeInRight">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<a :href="deleteUrl" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>\n\t    </div>\n\t  </div>\n\t'
+
+});
+
+var categoryView = new Vue({
+	el: '#category-view',
+
+	data: {
+		categories: {}
+	},
+
+	mounted: function mounted() {
+		this.getCategories();
+	},
+
+
+	methods: {
+		getCategories: function getCategories() {
+			var _this2 = this;
+
+			axios.get('category/all').then(function (response) {
+				console.log(response.data);
+				_this2.categories = response.data.categories;
+			}).catch(function (error) {
+				console.log(error.response.data);
+			});
+		}
+	}
+
+});
 
 /***/ }),
 /* 13 */

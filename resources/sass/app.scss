@@ -10,10 +10,13 @@
 
 // Animate.css
 @import '~animate.css/animate';
-// Error: cant import css files in scss
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/css/all';
 
 body {
 	background: #1f1f1f;
+	// color: #eee;
 }
 
 .btn-color{

@@ -6,7 +6,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-6 card card-body">
-            <form action="{{ url('websites') }}" method="POST" id="addWebsites">
+            <form action="{{ url('website') }}" method="POST" id="addWebsite">
             @csrf
               <div class="form-group">
                 <label for="name" class="">Name</label>

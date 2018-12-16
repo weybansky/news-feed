@@ -20,7 +20,7 @@
                   <h5 class="modal-title text-center" style="width: 100%;" id="exampleModalCenterTitle">Add New Feed</h5>
                 </div>
 
-                <form action="{{ url('websites') }}" method="POST" id="addWebsites">
+                <form action="{{ url('website') }}" method="POST" id="addWebsites">
                 	@csrf
                 	<div class="modal-body">
                     <div class="form-group">
@@ -81,10 +81,10 @@
 	                <p class="card-text">{{ $website->main_url }}</p>
 	                <p class="card-text">{{ $website->feed_name }} ({{ $website->type_of_feed }}) :</p>
 	                <p class="card-text">{{ $website->feed_url }}</p>
-                  <a href="{{ url('websites') }}/{{ $website->id }}/feed" class="btn btn-sm btn-color"><i class="fa fa-globe"></i> Feed</a>
+                  <a href="{{ url('website') }}/{{ $website->id }}/feed" class="btn btn-sm btn-color"><i class="fa fa-globe"></i> Feed</a>
 	                <a href="{{ $website->main_url }}" class="btn btn-sm btn-link"><i class="fa fa-globe"></i> Visit</a>
-	                <a href="{{ url('websites') }}/{{ $website->id }}/edit" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a>
-                  <form action="{{ url('websites') }}/{{ $website->id }}" method="POST" style="display: inline;">
+	                <a href="{{ url('website') }}/{{ $website->id }}/edit" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a>
+                  <form action="{{ url('website') }}/{{ $website->id }}" method="POST" style="display: inline;">
                     @csrf @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</button>
                   </form>

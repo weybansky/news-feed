@@ -11,6 +11,10 @@ class Category extends Model
 			'name', 'description'
 		];
 
+		protected $hidden = [
+			'created_at', 'updated_at', 'slug'
+		];
+
 		public function websites()
     {
         return $this->hasMany('App\Website');

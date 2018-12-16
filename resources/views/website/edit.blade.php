@@ -6,7 +6,7 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-6 card card-body">
-            <form action="{{ url('websites') }}/{{ $website->id }}" method="POST" id="addWebsites">
+            <form action="{{ url('website') }}/{{ $website->id }}" method="POST" id="addWebsites">
             @csrf @method('PATCH')
               <div class="form-group">
                 <label for="name" class="">Name</label>

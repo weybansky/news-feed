@@ -12,7 +12,10 @@
               <a class="nav-link" href="{{ url('feed') }}">Feed</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="{{ url('websites') }}">Websites</a>
+              <a class="nav-link" href="{{ url('website') }}">Website</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url('category') }}">Category</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -47,7 +50,7 @@
           </li>
       </ul>
       <form class="form-inline my-2 my-lg-0" method="GET" action="">
-          <select name="category" id="category" class="form-control mr-sm-2">
+          <select name="category" class="form-control mr-sm-2">
               <option value="select">-- Select Category --</option>
               @isset($categories)
                 @foreach($categories as $category)

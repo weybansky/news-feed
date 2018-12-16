@@ -17,18 +17,21 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 
 
-// ========================
-// Websites
-// Adding new websites
+// Website
+Route::get('website', 'WebsiteController@index');
+Route::get('website/add', 'WebsiteController@create');
+Route::post('website', 'WebsiteController@store');
+Route::get('website/{website}/edit', 'WebsiteController@edit');
+Route::patch('website/{website}', 'WebsiteController@update');
+Route::delete('website/{website}', 'WebsiteController@destroy');
+Route::get('website/{website}/feed', 'WebsiteController@show'); // display feed
 
-// =========================
-Route::get('websites', 'WebsiteController@index');
-Route::get('websites/add', 'WebsiteController@create');
-Route::post('websites', 'WebsiteController@store');
-Route::get('websites/{website}/edit', 'WebsiteController@edit');
-Route::patch('websites/{website}', 'WebsiteController@update');
-Route::delete('websites/{website}', 'WebsiteController@destroy');
-Route::get('websites/{website}/feed', 'WebsiteController@show'); // display feed
+// Category
+Route::get('category', 'CategoryController@index');
+Route::post('category', 'CategoryController@store');
+Route::get('category/all', 'CategoryController@all');
+Route::delete('category/{category}', 'CategoryController@destroy');
+Route::get('category/{category}', 'CategoryController@show');
 
 
 

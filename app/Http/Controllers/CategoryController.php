@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    public function __construct(){
+      // $this->middleware('auth')->only(['destroy','store',]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('category.index', compact('categories'));
+    }
+
+    public function all()
+    {
+        $categories = Category::all();
+
+        return response()->json(array('categories' => $categories), 200);
     }
 
     /**
@@ -35,7 +48,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request;
+
+        $this->validate(request(), [
+            'name'          => 'required|min:2',
+            'description'   => 'required'
+        ]);
+
+        $category = Category::create([
+            'name'          => request('name'),
+            'description'   => request('description')
+        ]);
+
+        return response()->json([
+            'category' => $category
+        ], 200);
     }
 
     /**
@@ -46,7 +73,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -80,6 +107,15 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category = Category::findOrFail($category->id);
+
+        // delete category
+        $category->delete();
+
+        return response()->json([
+            'category'  => $category,
+            'message'   => "Category Deleted"
+        ], 200);
+
     }
 }

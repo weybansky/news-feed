@@ -31,7 +31,7 @@ Route::get('category', 'CategoryController@index');
 Route::post('category', 'CategoryController@store');
 Route::get('category/all', 'CategoryController@all');
 Route::delete('category/{category}', 'CategoryController@destroy');
-Route::get('category/{category}', 'CategoryController@show');
+Route::get('category/{category}', 'CategoryController@show'); //shows a 404 page
 
 
 

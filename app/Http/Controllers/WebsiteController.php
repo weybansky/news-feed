@@ -19,8 +19,6 @@ class WebsiteController extends Controller
 
         $categories = Category::latest()->get();
 
-        // return $websites;
-
         return view('website.index', compact('websites', 'categories'));
     }
 
@@ -64,7 +62,7 @@ class WebsiteController extends Controller
           'icon'        => request('icon')
         ]);
 
-        return redirect('websites');
+        return redirect('website');
 
     }
 
@@ -150,7 +148,7 @@ class WebsiteController extends Controller
 
         $website->save();
 
-        return redirect('websites');
+        return redirect('website');
     }
 
     /**
@@ -163,6 +161,6 @@ class WebsiteController extends Controller
     {
         $website = Website::findOrFail($website->id);
         $website->delete();
-        return redirect('websites'); 
+        return redirect('website'); 
     }
 }

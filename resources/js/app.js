@@ -16,6 +16,8 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
+window.Event = new Vue();
+
 // Classes
 class Errors {
 	constructor () {
@@ -56,8 +58,12 @@ let category = new Vue({
   			})
   			.then((response) => {
   				console.log(response.data);
+  				this.categoryName = '';
+  				this.categoryDescription = '';
+  				Event.$emit('reloadCategories');
   			})
   			.catch((error) => {
+  				alert(error.response.data.message);
   				this.errors.record(error.response.data.errors);
   				console.log(error.response.data.errors);
   			})
@@ -71,27 +77,43 @@ let category = new Vue({
 
 
 Vue.component('category', {
-	props: [ 'name', 'description', 'id'],
+	props: [ 'name', 'description', 'id', 'slug'],
+
+	data(){
+		return {
+			classNameOne: 'card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
+			classNameTwo: 'fadeInRight',
+		}
+	},
 
 	computed: {
+		classNameAll() {
+			return this.classNameOne + ' ' + this.classNameTwo;
+		},
+
 		feedUrl() {
-			return "category/"+ this.id + "/feed";
+			return "category/"+ this.slug + "/feed";
 		},
 
 		deleteUrl() {
 			return "category/"+ this.id;
-		}
+		},
 	},
 
 	methods: {
 		deleteCategory(){
-			alert(this.id);
 			axios.delete(this.deleteUrl)
 				.then((response) => {
+					this.classNameTwo = "fadeOutLeft";
 					//console output
 					console.log(response.data);
 					// fire a delete event => remove the item from the array
-					// $emit('delete');
+					let category = {
+						name: this.name,
+						description: this.description,
+						id: this.id
+					}
+					Event.$emit('deleteCategory', category);
 				})
 				.catch((error) => {
 					console.log(error.response.data);
@@ -102,15 +124,14 @@ Vue.component('category', {
 	},
 
 	template: `
-	  <div class="card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated fadeInRight">
+	  <div :class="classNameAll">
 	    <div class="card-header"> {{ name }} </div>
 	    <div class="card-body text-secondary">
 	      <p class="card-text"> {{ description }} </p>
 	    </div>
 	    <div class="card-footer text-right">
-		    	<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
 		    	<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>
-		    	<a :href="deleteUrl" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+		    	<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
 	    </div>
 	  </div>
 	`,
@@ -122,6 +143,12 @@ let categoryView = new Vue({
 
 	data: {
 		categories: {},
+	},
+
+	computed: {
+		classNameAll() {
+			return this.classNameOne + ' ' + this.classNameTwo;
+		},
 	},
 
 	mounted () {
@@ -138,9 +165,23 @@ let categoryView = new Vue({
 				.catch((error) => {
 					console.log(error.response.data);
 				})
-
 		},
 
+		deleteCategory (category) {
+			console.log(category);
+			this.getCategories();
+		}
+
+	},
+
+	created(){
+		Event.$on('deleteCategory', (category) => {
+			alert(category.name + ' category deleted');
+			this.deleteCategory(category);
+		});
+		Event.$on('reloadCategories', () => {
+			this.getCategories();
+		});
 	}
 
 })

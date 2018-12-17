@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
 
     public function __construct(){
-      // $this->middleware('auth')->only(['destroy','store',]);
+      $this->middleware('auth')->only(['destroy','store',]);
     }
 
     /**
@@ -48,7 +48,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
+        $categorySlug = str_slug(request('name'));
 
         $this->validate(request(), [
             'name'          => 'required|min:2',
@@ -57,6 +57,7 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name'          => request('name'),
+            'slug'          => $categorySlug,
             'description'   => request('description')
         ]);
 

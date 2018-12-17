@@ -13910,6 +13910,8 @@ window.Vue = __webpack_require__(36);
 
 Vue.component('example-component', __webpack_require__(39));
 
+window.Event = new Vue();
+
 // Classes
 
 var Errors = function () {
@@ -13960,7 +13962,11 @@ var category = new Vue({
 				description: this.categoryDescription
 			}).then(function (response) {
 				console.log(response.data);
+				_this.categoryName = '';
+				_this.categoryDescription = '';
+				Event.$emit('reloadCategories');
 			}).catch(function (error) {
+				alert(error.response.data.message);
 				_this.errors.record(error.response.data.errors);
 				console.log(error.response.data.errors);
 			});
@@ -13970,11 +13976,22 @@ var category = new Vue({
 });
 
 Vue.component('category', {
-	props: ['name', 'description', 'id'],
+	props: ['name', 'description', 'id', 'slug'],
+
+	data: function data() {
+		return {
+			classNameOne: 'card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
+			classNameTwo: 'fadeInRight'
+		};
+	},
+
 
 	computed: {
+		classNameAll: function classNameAll() {
+			return this.classNameOne + ' ' + this.classNameTwo;
+		},
 		feedUrl: function feedUrl() {
-			return "category/" + this.id + "/feed";
+			return "category/" + this.slug + "/feed";
 		},
 		deleteUrl: function deleteUrl() {
 			return "category/" + this.id;
@@ -13983,12 +14000,19 @@ Vue.component('category', {
 
 	methods: {
 		deleteCategory: function deleteCategory() {
-			alert(this.id);
+			var _this2 = this;
+
 			axios.delete(this.deleteUrl).then(function (response) {
+				_this2.classNameTwo = "fadeOutLeft";
 				//console output
 				console.log(response.data);
 				// fire a delete event => remove the item from the array
-				// $emit('delete');
+				var category = {
+					name: _this2.name,
+					description: _this2.description,
+					id: _this2.id
+				};
+				Event.$emit('deleteCategory', category);
 			}).catch(function (error) {
 				console.log(error.response.data);
 				alert(error.response.data.message);
@@ -13996,7 +14020,7 @@ Vue.component('category', {
 		}
 	},
 
-	template: '\n\t  <div class="card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated fadeInRight">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<a :href="deleteUrl" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>\n\t    </div>\n\t  </div>\n\t'
+	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
 
 });
 
@@ -14007,6 +14031,12 @@ var categoryView = new Vue({
 		categories: {}
 	},
 
+	computed: {
+		classNameAll: function classNameAll() {
+			return this.classNameOne + ' ' + this.classNameTwo;
+		}
+	},
+
 	mounted: function mounted() {
 		this.getCategories();
 	},
@@ -14014,17 +14044,32 @@ var categoryView = new Vue({
 
 	methods: {
 		getCategories: function getCategories() {
-			var _this2 = this;
+			var _this3 = this;
 
 			axios.get('category/all').then(function (response) {
 				console.log(response.data);
-				_this2.categories = response.data.categories;
+				_this3.categories = response.data.categories;
 			}).catch(function (error) {
 				console.log(error.response.data);
 			});
+		},
+		deleteCategory: function deleteCategory(category) {
+			console.log(category);
+			this.getCategories();
 		}
-	}
+	},
 
+	created: function created() {
+		var _this4 = this;
+
+		Event.$on('deleteCategory', function (category) {
+			alert(category.name + ' category deleted');
+			_this4.deleteCategory(category);
+		});
+		Event.$on('reloadCategories', function () {
+			_this4.getCategories();
+		});
+	}
 });
 
 /***/ }),

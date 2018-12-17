@@ -73,7 +73,7 @@
       <div class="container">
         <div class="row">
         	@foreach($websites as $website)
-	          <div class="col-sm-4">
+	          <div class="col-sm-6">
 	            <div class="card animated fadeInUp">
 	              <img class="card-img-top" src="{{ asset('images/admin.jpg') }}" alt="Card image cap">
 	              <div class="card-body">

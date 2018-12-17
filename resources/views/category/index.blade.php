@@ -52,10 +52,10 @@
 				<h3 style="color: white;">
 					Categories
 				</h3>
-				<button type="button" class="btn btn-sm btn-link"><i class="fa fa-redo"></i></button>
+				<button type="button" class="btn btn-sm btn-link" v-on:click="getCategories"><i class="fa fa-redo"></i></button>
 			</div>
 			<div class="row">
-				<category v-for="category in categories" v-bind:key="category.id" v-bind:id="category.id" v-bind:name="category.name" v-bind:description="category.description"></category>
+				<category v-for="category in categories" v-bind:key="category.id" v-bind:id="category.id" v-bind:name="category.name" v-bind:description="category.description"v-bind:slug="category.slug"></category>
 			</div>
 		</div>
 	</section>

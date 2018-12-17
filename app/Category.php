@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $fillable = [
-			'name', 'description'
+			'name', 'description', 'slug'
 		];
 
 		protected $hidden = [
-			'created_at', 'updated_at', 'slug'
+			'created_at', 'updated_at',
 		];
 
 		public function websites()

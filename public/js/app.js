@@ -13980,7 +13980,7 @@ Vue.component('category', {
 
 	data: function data() {
 		return {
-			classNameOne: 'card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
+			classNameOne: 'card col-md-3 col-sm-4 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
 			classNameTwo: 'fadeInRight'
 		};
 	},
@@ -14020,7 +14020,7 @@ Vue.component('category', {
 		}
 	},
 
-	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
+	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="editCategory" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></button>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
 
 });
 
@@ -14070,6 +14070,33 @@ var categoryView = new Vue({
 			_this4.getCategories();
 		});
 	}
+});
+
+// ==================================================================== //
+
+// The Edit category component
+Vue.component('category-edit', {
+	props: ['name'],
+
+	data: function data() {
+		return {
+			editUrl: '',
+			categoryName: '',
+			categoryDescription: '',
+			errors: new Errors()
+		};
+	},
+
+
+	methods: {
+		editCategory: function editCategory() {}
+	},
+
+	template: '\n\t\t<div id="categoryEdit" tabindex="-1" role="dialog" aria-labelledby="categoryEditTitle" aria-hidden="true" class="modal fade">\n\t\t  <div class="modal-dialog modal-dialog-centered" role="document">\n\t\t    <div class="modal-content">\n\t\t      <div class="modal-header">\n\t\t        <h5 class="modal-title text-center" style="width: 100%;" id="categoryEditTitle">Edit Category</h5>\n\t\t      </div>\n\n\t\t      <form :action="editUrl" method="POST" v-on:submit.prevent="editCategory" v-on:keydown="errors.clear($event.target.name)">\n\t\t      \t<div class="modal-body">\n\t\t          <div class="form-group">\n\t\t            <label for="name" class="">Name</label>\n\t\t            <input type="text" name="name" class="form-control" placeholder="Category NameName" v-model="categoryName">\n\t\t            <span class="help-block text-danger" v-text="errors.get(\'name\')"></span>\n\t\t          </div>\n\t\t          <div class="form-group">\n\t\t            <label for="description">Description</label>\n\t\t            <textarea name="description" class="form-control" placeholder="Category Description" v-model=\'categoryDescription\'></textarea>\n\t\t            <span class="help-block text-danger" v-text="errors.get(\'description\')"></span>\n\t\t          </div>\n\t\t      \t</div>\n\t\t      \t<div class="modal-footer">\n\t\t        \t<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>\n\t\t        \t<button type="button" class="btn btn-color" v-bind:disabled=\'categoryName.length < 2\' v-on:Click="editCategory">Add</button>\n\t\t      \t</div>\n\t\t      </form>\n\t\t    </div>\n\t\t  </div>\n\t\t</div>\n\t'
+});
+
+var categoryEdit = new Vue({
+	el: '#categoryEditModal'
 });
 
 /***/ }),

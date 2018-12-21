@@ -15,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // categories
-        view()->composer('includes.nav', function ($view) {
-            $view->with('categories', Category::latest()->get());
+        view()->composer(['*'], function ($view) {
+            $view->with('categories', Category::latest()->orderBy('name')->get());
         });
     }
 

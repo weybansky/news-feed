@@ -19,13 +19,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('category.index', compact('categories'));
+        return view('category.index');
     }
 
     public function all()
     {
-        $categories = Category::all();
+        $categories = Category::latest()->orderBy('name')->get();
 
         return response()->json(array('categories' => $categories), 200);
     }
@@ -74,7 +73,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        abort(404);
+        //
     }
 
     /**

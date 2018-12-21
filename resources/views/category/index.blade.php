@@ -36,7 +36,7 @@
 	            	</div>
 	            	<div class="modal-footer">
 	              	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-	              	<button type="button" class="btn btn-color" v-bind:disabled='categoryName.length < 0' v-on:Click="addNewCategory">Add</button>
+	              	<button type="button" class="btn btn-color" v-bind:disabled='categoryName.length < 2' v-on:Click="addNewCategory">Add</button>
 	            	</div>
 	            </form>
 	          </div>
@@ -56,6 +56,17 @@
 			</div>
 			<div class="row">
 				<category v-for="category in categories" v-bind:key="category.id" v-bind:id="category.id" v-bind:name="category.name" v-bind:description="category.description"v-bind:slug="category.slug"></category>
+			</div>
+		</div>
+	</section>
+
+	<section id="categoryEditModal">
+		<div class="container">
+			<div class="row">
+				<button type="button" class="btn btn-color animated slideInLeft" data-toggle="modal" data-target="#categoryEdit">
+	          <i class="fa fa-plus"></i> Category
+	        </button>
+				<category-edit></category-edit>
 			</div>
 		</div>
 	</section>

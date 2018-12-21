@@ -17,9 +17,7 @@ class WebsiteController extends Controller
     {
         $websites = Website::latest()->get();
 
-        $categories = Category::latest()->get();
-
-        return view('website.index', compact('websites', 'categories'));
+        return view('website.index', compact('websites'));
     }
 
     /**
@@ -29,9 +27,7 @@ class WebsiteController extends Controller
      */
     public function create()
     {
-        $categories = Category::latest()->get();
-
-        return view('website.create', compact('categories'));
+        return view('website.create');
     }
 
     /**
@@ -74,20 +70,17 @@ class WebsiteController extends Controller
      */
     public function show(Website $website)
     {
+        // $url = {'https://threatpost.com/feed/', 'https://www.weybanskytech.com.ng/feed', 'https://medium.com/feed/the-story', 'http://raqeebahshittu.blogspot.com/feeds/posts/default?alt=rss'}
         $website = Website::findOrFail($website->id);
-            // feed_url
-            // type_of_feed
-        // return $website;
-
         if ($website->type_of_feed == 'rss') {
             try {
                 $rss = \Feed::loadRss($website->feed_url);
                 $items = $rss->item;
                 dd($rss);
 
-            } catch (Exception $e) {
-                return 'RSS Feed Not Working';
-                abort(500);
+            // } catch (\Exception $e) {
+            //     return 'RSS Feed Not Working';
+            //     abort(500);
             }
         }elseif ($website->type_of_feed == 'atom') {
             try {
@@ -95,7 +88,7 @@ class WebsiteController extends Controller
                 $entries = $atom->entry;
                 dd($atom);
                 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return 'Atom Feed Not working';
                 abort(500);
             }
@@ -112,9 +105,7 @@ class WebsiteController extends Controller
     {
         $website = Website::findOrFail($website->id);
 
-        $categories = Category::latest()->get();
-
-        return view('website.edit', compact('website', 'categories'));
+        return view('website.edit', compact('website'));
     }
 
     /**

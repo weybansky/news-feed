@@ -81,7 +81,7 @@ Vue.component('category', {
 
 	data(){
 		return {
-			classNameOne: 'card col-md-4 col-sm-6 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
+			classNameOne: 'card col-md-3 col-sm-4 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
 			classNameTwo: 'fadeInRight',
 		}
 	},
@@ -131,6 +131,7 @@ Vue.component('category', {
 	    </div>
 	    <div class="card-footer text-right">
 		    	<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>
+		    	<button @click="editCategory" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></button>
 		    	<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
 	    </div>
 	  </div>
@@ -184,4 +185,63 @@ let categoryView = new Vue({
 		});
 	}
 
+})
+
+
+// ==================================================================== //
+
+// The Edit category component
+Vue.component('category-edit', {
+	props: ['name', ],
+
+	data() {
+		return {
+			editUrl: '',
+			categoryName: '',
+			categoryDescription: '',
+			errors: new Errors(),
+		}
+	},
+
+	methods: {
+		editCategory() {
+
+		},
+
+	},
+
+	template: `
+		<div id="categoryEdit" tabindex="-1" role="dialog" aria-labelledby="categoryEditTitle" aria-hidden="true" class="modal fade">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title text-center" style="width: 100%;" id="categoryEditTitle">Edit Category</h5>
+		      </div>
+
+		      <form :action="editUrl" method="POST" v-on:submit.prevent="editCategory" v-on:keydown="errors.clear($event.target.name)">
+		      	<div class="modal-body">
+		          <div class="form-group">
+		            <label for="name" class="">Name</label>
+		            <input type="text" name="name" class="form-control" placeholder="Category NameName" v-model="categoryName">
+		            <span class="help-block text-danger" v-text="errors.get('name')"></span>
+		          </div>
+		          <div class="form-group">
+		            <label for="description">Description</label>
+		            <textarea name="description" class="form-control" placeholder="Category Description" v-model='categoryDescription'></textarea>
+		            <span class="help-block text-danger" v-text="errors.get('description')"></span>
+		          </div>
+		      	</div>
+		      	<div class="modal-footer">
+		        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		        	<button type="button" class="btn btn-color" v-bind:disabled='categoryName.length < 2' v-on:Click="editCategory">Add</button>
+		      	</div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+	`,
+})
+
+let categoryEdit = new Vue({
+	el: '#categoryEditModal'
 })

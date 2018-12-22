@@ -54,19 +54,12 @@
 				</h3>
 				<button type="button" class="btn btn-sm btn-link" v-on:click="getCategories"><i class="fa fa-redo"></i></button>
 			</div>
-			<div class="row">
+			<div class="row p-2">
 				<category v-for="category in categories" v-bind:key="category.id" v-bind:id="category.id" v-bind:name="category.name" v-bind:description="category.description"v-bind:slug="category.slug"></category>
 			</div>
-		</div>
-	</section>
-
-	<section id="categoryEditModal">
-		<div class="container">
 			<div class="row">
-				<button type="button" class="btn btn-color animated slideInLeft" data-toggle="modal" data-target="#categoryEdit">
-	          <i class="fa fa-plus"></i> Category
-	        </button>
 				<category-edit></category-edit>
+				{{-- <example-component></example-component> --}}
 			</div>
 		</div>
 	</section>

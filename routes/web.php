@@ -21,6 +21,8 @@ Route::get('category', 'CategoryController@index');
 Route::post('category', 'CategoryController@store');
 Route::get('category/all', 'CategoryController@all');
 Route::delete('category/{category}', 'CategoryController@destroy');
+Route::patch('category/{category}', 'CategoryController@update');
+Route::get('category/{category}/feed', 'CategoryController@show');
 
 
 // Website

@@ -13943,6 +13943,150 @@ var Errors = function () {
 	return Errors;
 }();
 
+// COMPONENTS
+
+
+Vue.component('category', {
+	props: ['name', 'description', 'id', 'slug'],
+
+	data: function data() {
+		return {
+			classNameOne: 'card col-sm-4 col-md-4 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
+			classNameTwo: 'fadeInRight',
+			classNameThree: '' //delay-2s
+		};
+	},
+
+
+	computed: {
+		classNameAll: function classNameAll() {
+			return this.classNameOne + ' ' + this.classNameTwo + ' ' + this.classNameThree;
+		},
+		feedUrl: function feedUrl() {
+			return "category/" + this.id + "/feed";
+		},
+		deleteUrl: function deleteUrl() {
+			return "category/" + this.id;
+		}
+	},
+
+	methods: {
+		deleteCategory: function deleteCategory() {
+			var _this = this;
+
+			axios.delete(this.deleteUrl).then(function (response) {
+				_this.classNameTwo = "fadeOutLeft";
+				//console output
+				console.log(response.data);
+				// fire a delete event => remove the item from the array
+				var category = {
+					name: _this.name,
+					description: _this.description,
+					id: _this.id
+				};
+				Event.$emit('deleteCategory', category);
+			}).catch(function (error) {
+				// check for status codes
+				if (error.response.status == 401) {
+					// Unauthorized / Unauthenticated
+					alert(error.response.data.message);
+					window.location = "login";
+					return false;
+				}
+
+				console.log(error.response.data);
+				alert(error.response.data.message);
+			});
+		},
+		editCategory: function editCategory() {
+			console.log('Handling It...editCategory');
+			// get the category data
+			var category = {
+				name: this.name,
+				description: this.description,
+				id: this.id
+			};
+			// emit an updateCategiry Event
+			Event.$emit('updateCategory', category);
+			// and perform any other action
+		}
+	},
+
+	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="editCategory" data-toggle="modal" data-target="#categoryEdit" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></button>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
+
+});
+
+// The Edit category component
+Vue.component('category-edit', {
+	// props: ['name', ],
+
+	data: function data() {
+		return {
+			categoryId: '',
+			categoryName: '',
+			categoryDescription: '',
+			errors: new Errors()
+		};
+	},
+
+
+	computed: {
+		updateUrl: function updateUrl() {
+			return "category/" + this.categoryId;
+		}
+	},
+
+	methods: {
+		updateCategory: function updateCategory() {
+			var _this2 = this;
+
+			console.log('Updating the Category');
+			console.log(this.updateUrl);
+			// sending a patch request to update the category
+			axios.patch(this.updateUrl, {
+				name: this.categoryName,
+				description: this.categoryDescription
+			}).then(function (response) {
+				console.log(response.data);
+
+				// TODO
+				// close the modal
+
+				Event.$emit('reloadCategories');
+				console.log('Category was Updated');
+			}).catch(function (error) {
+				// check for status codes
+				if (error.response.status == 401) {
+					// Unauthorized / Unauthenticated
+					alert(error.response.data.message);
+					window.location = "login";
+					return false;
+				}
+
+				console.log(error.response);
+				_this2.errors.record(error.response.data.errors);
+				console.log(error.response.data.errors);
+			});
+		}
+	},
+
+	created: function created() {
+		var _this3 = this;
+
+		console.log('category-edit has been creted');
+		Event.$on('updateCategory', function (category) {
+			console.log(category.name + ' category data was gotten and is being updated');
+			_this3.categoryId = category.id;
+			_this3.categoryName = category.name;
+			_this3.categoryDescription = category.description;
+		});
+	},
+
+
+	template: '\n\t\t<div id="categoryEdit" tabindex="-1" role="dialog" aria-labelledby="categoryEditTitle" aria-hidden="true" class="modal fade">\n\t\t  <div class="modal-dialog modal-dialog-centered" role="document">\n\t\t    <div class="modal-content">\n\t\t      <div class="modal-header">\n\t\t        <h5 class="modal-title text-center" style="width: 100%;" id="categoryEditTitle">Edit Category</h5>\n\t\t      </div>\n\n\t\t      <form :action="updateUrl" method="POST" v-on:submit.prevent="updateCategory" v-on:keydown="errors.clear($event.target.name)">\n\t\t      \t<input type="hidden" name="_method" value="PATCH">\n\t\t      \t<div class="modal-body">\n\t\t          <div class="form-group">\n\t\t            <label for="name" class="">Name</label>\n\t\t            <input type="text" name="name" class="form-control" placeholder="Category NameName" v-model="categoryName">\n\t\t            <span class="help-block text-danger" v-text="errors.get(\'name\')"></span>\n\t\t          </div>\n\t\t          <div class="form-group">\n\t\t            <label for="description">Description</label>\n\t\t            <textarea name="description" class="form-control" placeholder="Category Description" v-model=\'categoryDescription\'></textarea>\n\t\t            <span class="help-block text-danger" v-text="errors.get(\'description\')"></span>\n\t\t          </div>\n\t\t      \t</div>\n\t\t      \t<div class="modal-footer">\n\t\t        \t<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>\n\t\t        \t<button type="button" class="btn btn-color" v-bind:disabled="categoryName.length < 2" v-on:click="updateCategory">Update</button>\n\t\t      \t</div>\n\t\t      </form>\n\t\t    </div>\n\t\t  </div>\n\t\t</div>\n\t'
+});
+
+// INSTANCES
 var category = new Vue({
 	el: '#addCategory',
 
@@ -13955,72 +14099,31 @@ var category = new Vue({
 
 	methods: {
 		addNewCategory: function addNewCategory() {
-			var _this = this;
+			var _this4 = this;
 
 			axios.post('category', {
 				name: this.categoryName,
 				description: this.categoryDescription
 			}).then(function (response) {
 				console.log(response.data);
-				_this.categoryName = '';
-				_this.categoryDescription = '';
+				_this4.categoryName = '';
+				_this4.categoryDescription = '';
 				Event.$emit('reloadCategories');
 			}).catch(function (error) {
-				alert(error.response.data.message);
-				_this.errors.record(error.response.data.errors);
+				// check for status codes
+				if (error.response.status == 401) {
+					// Unauthorized / Unauthenticated
+					alert(error.response.data.message);
+					window.location = "login";
+					return false;
+				}
+
+				console.log(error.response);
+				_this4.errors.record(error.response.data.errors);
 				console.log(error.response.data.errors);
 			});
 		}
 	}
-
-});
-
-Vue.component('category', {
-	props: ['name', 'description', 'id', 'slug'],
-
-	data: function data() {
-		return {
-			classNameOne: 'card col-md-3 col-sm-4 col-xs-12 pr-0 pl-0 border-primary mb-3 animated',
-			classNameTwo: 'fadeInRight'
-		};
-	},
-
-
-	computed: {
-		classNameAll: function classNameAll() {
-			return this.classNameOne + ' ' + this.classNameTwo;
-		},
-		feedUrl: function feedUrl() {
-			return "category/" + this.slug + "/feed";
-		},
-		deleteUrl: function deleteUrl() {
-			return "category/" + this.id;
-		}
-	},
-
-	methods: {
-		deleteCategory: function deleteCategory() {
-			var _this2 = this;
-
-			axios.delete(this.deleteUrl).then(function (response) {
-				_this2.classNameTwo = "fadeOutLeft";
-				//console output
-				console.log(response.data);
-				// fire a delete event => remove the item from the array
-				var category = {
-					name: _this2.name,
-					description: _this2.description,
-					id: _this2.id
-				};
-				Event.$emit('deleteCategory', category);
-			}).catch(function (error) {
-				console.log(error.response.data);
-				alert(error.response.data.message);
-			});
-		}
-	},
-
-	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="editCategory" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></button>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
 
 });
 
@@ -14044,59 +14147,33 @@ var categoryView = new Vue({
 
 	methods: {
 		getCategories: function getCategories() {
-			var _this3 = this;
+			var _this5 = this;
+
+			// Creates a kind of reload effect
+			this.categories = {};
+			// end reload effect
 
 			axios.get('category/all').then(function (response) {
 				console.log(response.data);
-				_this3.categories = response.data.categories;
+				_this5.categories = response.data.categories;
 			}).catch(function (error) {
 				console.log(error.response.data);
 			});
-		},
-		deleteCategory: function deleteCategory(category) {
-			console.log(category);
-			this.getCategories();
 		}
 	},
 
 	created: function created() {
-		var _this4 = this;
+		var _this6 = this;
 
 		Event.$on('deleteCategory', function (category) {
 			alert(category.name + ' category deleted');
-			_this4.deleteCategory(category);
+			console.log(category);
+			_this6.getCategories();
 		});
 		Event.$on('reloadCategories', function () {
-			_this4.getCategories();
+			_this6.getCategories();
 		});
 	}
-});
-
-// ==================================================================== //
-
-// The Edit category component
-Vue.component('category-edit', {
-	props: ['name'],
-
-	data: function data() {
-		return {
-			editUrl: '',
-			categoryName: '',
-			categoryDescription: '',
-			errors: new Errors()
-		};
-	},
-
-
-	methods: {
-		editCategory: function editCategory() {}
-	},
-
-	template: '\n\t\t<div id="categoryEdit" tabindex="-1" role="dialog" aria-labelledby="categoryEditTitle" aria-hidden="true" class="modal fade">\n\t\t  <div class="modal-dialog modal-dialog-centered" role="document">\n\t\t    <div class="modal-content">\n\t\t      <div class="modal-header">\n\t\t        <h5 class="modal-title text-center" style="width: 100%;" id="categoryEditTitle">Edit Category</h5>\n\t\t      </div>\n\n\t\t      <form :action="editUrl" method="POST" v-on:submit.prevent="editCategory" v-on:keydown="errors.clear($event.target.name)">\n\t\t      \t<div class="modal-body">\n\t\t          <div class="form-group">\n\t\t            <label for="name" class="">Name</label>\n\t\t            <input type="text" name="name" class="form-control" placeholder="Category NameName" v-model="categoryName">\n\t\t            <span class="help-block text-danger" v-text="errors.get(\'name\')"></span>\n\t\t          </div>\n\t\t          <div class="form-group">\n\t\t            <label for="description">Description</label>\n\t\t            <textarea name="description" class="form-control" placeholder="Category Description" v-model=\'categoryDescription\'></textarea>\n\t\t            <span class="help-block text-danger" v-text="errors.get(\'description\')"></span>\n\t\t          </div>\n\t\t      \t</div>\n\t\t      \t<div class="modal-footer">\n\t\t        \t<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>\n\t\t        \t<button type="button" class="btn btn-color" v-bind:disabled=\'categoryName.length < 2\' v-on:Click="editCategory">Add</button>\n\t\t      \t</div>\n\t\t      </form>\n\t\t    </div>\n\t\t  </div>\n\t\t</div>\n\t'
-});
-
-var categoryEdit = new Vue({
-	el: '#categoryEditModal'
 });
 
 /***/ }),

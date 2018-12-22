@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
 
     public function __construct(){
-      $this->middleware('auth')->only(['destroy','store',]);
+      $this->middleware('auth')->only(['destroy','store', 'update']);
     }
 
     /**
@@ -24,19 +24,9 @@ class CategoryController extends Controller
 
     public function all()
     {
-        $categories = Category::latest()->orderBy('name')->get();
+        $categories = Category::select()->orderBy('name')->get();
 
         return response()->json(array('categories' => $categories), 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -73,18 +63,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        return $category;
     }
 
     /**
@@ -96,7 +75,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $this->validate(request(), [
+            'name'          => 'required|min:2',
+            'description'   => 'required'
+        ]);
+
+        $category = Category::findOrFail($category->id);
+        $category->name          = request('name');
+        $category->description   = request('description');
+        $category->save();
+
+        return response()->json([
+            'category' => $category
+        ], 200);
     }
 
     /**

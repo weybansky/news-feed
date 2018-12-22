@@ -68,8 +68,9 @@ class WebsiteController extends Controller
      * @param  \App\Website  $website
      * @return \Illuminate\Http\Response
      */
-    public function show(Website $website)
+    public function show(Website $website, Request $request)
     {
+        // dd($request->server()["HTTP_REFERER"]);
         // $url = {'https://threatpost.com/feed/', 'https://www.weybanskytech.com.ng/feed', 'https://medium.com/feed/the-story', 'http://raqeebahshittu.blogspot.com/feeds/posts/default?alt=rss'}
         $website = Website::findOrFail($website->id);
         if ($website->type_of_feed == 'rss') {
@@ -78,9 +79,8 @@ class WebsiteController extends Controller
                 $items = $rss->item;
                 dd($rss);
 
-            // } catch (\Exception $e) {
-            //     return 'RSS Feed Not Working';
-            //     abort(500);
+            } catch (\Exception $e) {
+                abort(404, 'Rss Feed Not Working');
             }
         }elseif ($website->type_of_feed == 'atom') {
             try {
@@ -89,8 +89,7 @@ class WebsiteController extends Controller
                 dd($atom);
                 
             } catch (\Exception $e) {
-                return 'Atom Feed Not working';
-                abort(500);
+                abort(404, 'Atom Feed Not working');
             }
         }
     }

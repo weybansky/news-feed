@@ -45,7 +45,7 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::create([
-            'name'          => request('name'),
+            'name'          => strtolower(request('name')),
             'slug'          => $categorySlug,
             'description'   => request('description')
         ]);
@@ -81,7 +81,7 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::findOrFail($category->id);
-        $category->name          = request('name');
+        $category->name          = strtolower(request('name'));
         $category->description   = request('description');
         $category->save();
 

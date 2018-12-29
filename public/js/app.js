@@ -14012,7 +14012,13 @@ Vue.component('category', {
 		}
 	},
 
-	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="editCategory" data-toggle="modal" data-target="#categoryEdit" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></button>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
+	filters: {
+		capitalize: function capitalize(value) {
+			return _.startCase(value);
+		}
+	},
+
+	template: '\n\t  <div :class="classNameAll">\n\t    <div class="card-header"> {{ name | capitalize }} </div>\n\t    <div class="card-body text-secondary">\n\t      <p class="card-text"> {{ description }} </p>\n\t    </div>\n\t    <div class="card-footer text-right">\n\t\t    \t<a :href="feedUrl" class="btn btn-sm btn-primary">View Feed</a>\n\t\t    \t<button @click="editCategory" data-toggle="modal" data-target="#categoryEdit" class="btn btn-sm btn-warning"><i class="fa fa-pen"></i></button>\n\t\t    \t<button @click="deleteCategory" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>\n\t    </div>\n\t  </div>\n\t'
 
 });
 

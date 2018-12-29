@@ -1,5 +1,7 @@
 <?php
 
+use App\Feed;
+use App\Website;
 use Illuminate\Http\Request;
 
 /*
@@ -33,3 +35,9 @@ Route::get('website/{website}/edit', 'WebsiteController@edit');
 Route::patch('website/{website}', 'WebsiteController@update');
 Route::delete('website/{website}', 'WebsiteController@destroy');
 Route::get('website/{website}/feed', 'WebsiteController@show'); // display feed
+
+
+// Feed
+Route::get('feed/run/{website}', 'FeedController@single');
+Route::get('feed/run', 'FeedController@all');
+Route::get('feed', 'FeedController@index');

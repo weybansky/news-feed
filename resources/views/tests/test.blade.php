@@ -78,16 +78,7 @@
 
             <div class="content">
                 <div class="">
-                    <ul>
-                        @foreach($items as $item)
-                            <li><a href="{{ $item->link }}">{{ $item->title }}</a></li>   
-                        @endforeach
-                    </ul>
-                    <ol>
-                        @for ($i = 0; $i < count($items); $i++)
-                            <p class="lead" style="color: red;">{{ $items[$i]->title }}</p>
-                        @endfor
-                    </ol>
+                    <h1>Hello Wolrd</h1>
                 </div>
             </div>
         </div>

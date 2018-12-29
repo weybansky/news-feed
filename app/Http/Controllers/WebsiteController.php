@@ -15,8 +15,7 @@ class WebsiteController extends Controller
      */
     public function index()
     {
-        $websites = Website::latest()->get();
-
+        $websites = Website::select()->orderBy('name')->get();
         return view('website.index', compact('websites'));
     }
 
@@ -70,28 +69,15 @@ class WebsiteController extends Controller
      */
     public function show(Website $website, Request $request)
     {
-        // dd($request->server()["HTTP_REFERER"]);
-        // $url = {'https://threatpost.com/feed/', 'https://www.weybanskytech.com.ng/feed', 'https://medium.com/feed/the-story', 'http://raqeebahshittu.blogspot.com/feeds/posts/default?alt=rss'}
+        // TODO
+        // This is normally supposed to show thw list of Feeds associated with the particular Website
         $website = Website::findOrFail($website->id);
-        if ($website->type_of_feed == 'rss') {
-            try {
-                $rss = \Feed::loadRss($website->feed_url);
-                $items = $rss->item;
-                dd($rss);
+        $feeds = $website->feeds;
 
-            } catch (\Exception $e) {
-                abort(404, 'Rss Feed Not Working');
-            }
-        }elseif ($website->type_of_feed == 'atom') {
-            try {
-                $atom = \Feed::loadAtom($website->feed_url);
-                $entries = $atom->entry;
-                dd($atom);
-                
-            } catch (\Exception $e) {
-                abort(404, 'Atom Feed Not working');
-            }
-        }
+        return $feeds;
+        // should return a page with all feeds from the website (in a card)
+        // return view('website.feeds', compact('feeds'));
+
     }
 
     /**

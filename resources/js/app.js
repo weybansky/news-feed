@@ -40,6 +40,7 @@ class Errors {
 
 }
 
+
 // COMPONENTS
 Vue.component('category', {
 	props: [ 'name', 'description', 'id', 'slug'],
@@ -111,9 +112,15 @@ Vue.component('category', {
 
 	},
 
+	filters: {
+		capitalize(value){
+			return _.startCase(value);
+		}
+	},
+
 	template: `
 	  <div :class="classNameAll">
-	    <div class="card-header"> {{ name }} </div>
+	    <div class="card-header"> {{ name | capitalize }} </div>
 	    <div class="card-body text-secondary">
 	      <p class="card-text"> {{ description }} </p>
 	    </div>
@@ -126,6 +133,7 @@ Vue.component('category', {
 	`,
 
 })
+
 
 // The Edit category component
 Vue.component('category-edit', {

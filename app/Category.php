@@ -17,6 +17,11 @@ class Category extends Model
 
 		public function websites()
     {
-        return $this->hasMany('App\Website');
+      return $this->hasMany('App\Website');
+    }
+
+    public function feeds()
+    {
+      return $this->hasMany('App\Feed');
     }
 }

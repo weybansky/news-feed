@@ -19,16 +19,11 @@ class CreateFeedsTable extends Migration
             $table->string('category_id');
 
             $table->string('post_title');
-            $table->string('post_url');
+            $table->string('post_url')->unique();
             $table->dateTime('pub_date');
-
-            // guid
-            $table->string('post_id');
+            $table->text('post_content')->nullable();
+            $table->string('post_id');  // guid
             
-            $table->string('post_content')->nullable();
-            // dc:creator
-            $table->string('post_author');
-
             $table->string('post_picture')->nullable();
             
             $table->timestamps();

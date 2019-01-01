@@ -14,6 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // added so as to prevent db string error
+        Schema::defaultStringlength(191);
         // categories
         view()->composer(['*'], function ($view) {
             $view->with('categories', Category::latest()->orderBy('name')->get());

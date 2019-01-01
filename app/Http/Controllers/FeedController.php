@@ -10,7 +10,11 @@ class FeedController extends Controller
 {
 
     public function index () {
-        return Feed::latest()->get();
+        $feeds = Feed::latest('pub_date')->get();
+
+        // return Feed::first();
+
+        return view('feed.index', compact('feeds'));
     }
 
     // $url = {'https://threatpost.com/feed/', 'https://www.weybanskytech.com.ng/feed', 'https://medium.com/feed/the-story', 'http://raqeebahshittu.blogspot.com/feeds/posts/default?alt=rss'}

@@ -47,6 +47,10 @@ class WebsiteController extends Controller
             'icon'          => 'nullable',
         ]);
 
+        if ($request->type_of_feed == "atom") {
+            abort(404, "Atom Feed not supported. Check back later");
+        }
+
         $website = Website::create([
           'category_id' => request('category'),
           'name'        => request('name'),
@@ -112,6 +116,10 @@ class WebsiteController extends Controller
             'icon'          => 'nullable',
         ]);
 
+        if ($request->type_of_feed == "atom") {
+            abort(404, "Atom Feed not supported. Check back later");
+        }
+
         $website = Website::findOrFail($website->id);
 
         $website->category_id  = request('category');
@@ -136,6 +144,7 @@ class WebsiteController extends Controller
     public function destroy(Website $website)
     {
         $website = Website::findOrFail($website->id);
+        $website->feeds()->delete();
         $website->delete();
         return redirect('website'); 
     }

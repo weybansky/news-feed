@@ -37,7 +37,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="type_of_feed">Category</label>
+                <label for="type_of_feed">Feed Type</label>
                 <select name="type_of_feed" class="form-control">
                   <option value="{{ $website->type_of_feed }}">{{ ucfirst($website->type_of_feed) }}</option>
                   <option value="other">-- Feed Type --</option>

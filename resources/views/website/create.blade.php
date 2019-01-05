@@ -34,7 +34,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="type_of_feed">Category</label>
+                <label for="type_of_feed">Feed Type</label>
                 <select name="type_of_feed" class="form-control">
                   <option value="other">-- Feed Type --</option>
                   <option value="rss">RSS</option>

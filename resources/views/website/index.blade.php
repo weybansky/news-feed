@@ -79,8 +79,8 @@
 	              <div class="card-body">
 	                <h5 class="card-title">{{ $website->name }}</h5>
 	                <p class="card-text">{{ $website->main_url }}</p>
-	                <p class="card-text">{{ $website->feed_name }} ({{ $website->type_of_feed }}) :</p>
-	                <p class="card-text">{{ $website->feed_url }}</p>
+	                <p class="card-text">{{ $website->feed_name }} ({{ $website->type_of_feed }}) : <a href="{{ url('feed/run') }}/{{ $website->id }}" class="btn btn-sm btn-color"><i class="fa fa-globe"></i> RUN</a></p>
+	                <p class="card-text"><a href="{{ $website->feed_url }}">{{ $website->feed_url }}</a></p>
                   <a href="{{ url('website') }}/{{ $website->id }}/feed" class="btn btn-sm btn-color"><i class="fa fa-globe"></i> Feed</a>
 	                <a href="{{ $website->main_url }}" class="btn btn-sm btn-link"><i class="fa fa-globe"></i> Visit</a>
 	                <a href="{{ url('website') }}/{{ $website->id }}/edit" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Edit</a>

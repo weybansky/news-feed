@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 */
 
 Auth::routes();
-Route::get('/', 'HomeController@index');
+// Route::get('/', 'HomeController@index');
+Route::get('/', 'FeedController@index');
 
 // Category
 Route::get('category', 'CategoryController@index');

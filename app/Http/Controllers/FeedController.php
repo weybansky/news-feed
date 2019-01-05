@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 class FeedController extends Controller
 {
 
+    public function __construct(){
+      $this->middleware('auth')->except(['index']);
+    }
+
     public function index () {
         $feeds = Feed::latest('pub_date')->get();
         return view('feed.index', compact('feeds'));
@@ -85,7 +89,7 @@ class FeedController extends Controller
     // Add the feed for all registeres websites
     public function all () {
         $websites = Website::all();
-        
+
         foreach ($websites as $website) {
             if ($website->type_of_feed == 'rss') {
                 try {
@@ -114,8 +118,10 @@ class FeedController extends Controller
                     }
 
                 } catch (\Exception $e) {
-                        abort(404, 'Rss Feed Not Working');
+                    // TODO
+                    // Find a way to log the errors
                         // dd($e);
+                        // abort(404, 'Rss Feed Not Working');
                 }
             } elseif ($website->type_of_feed == 'atom') {
                 abort(404, 'Atom Feed Not Supported. Check back later');
@@ -140,8 +146,7 @@ class FeedController extends Controller
                         // $feed = Feed::create([
                         //  ''
                         // ]);
-                    }
-                        
+                    }   
                 } catch (\Exception $e) {
                         abort(404, 'Atom Feed Not working');
                 }

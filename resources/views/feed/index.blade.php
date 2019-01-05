@@ -14,7 +14,7 @@
 					<div class="col-12 col-sm-6 col-md-6">.
 						<div class="card">
 							<p class="card-header p-2">
-								<img src="http://s2.googleusercontent.com/s2/favicons?domain_url={{$feed->website->main_url}}" style="width: 16px;height: 16px;" alt="" class="mr-2">
+								<img src="https://s2.googleusercontent.com/s2/favicons?domain_url={{$feed->website->main_url}}" style="width: 16px;height: 16px;" alt="" class="mr-2">
 								<a class="text-secondary" href="{{$feed->website->main_url}}">{{ $feed->website->name }}</a>
 								<span><i class="fa fa-dot mr-1 ml-1"></i></span>
 									<small class="text-secondary">{{ \Carbon\Carbon::parse($feed->pub_date)->diffForHumans() }}</small>

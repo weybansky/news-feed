@@ -49,7 +49,7 @@ class FeedController extends Controller
                 return "Successfully added the Feed <a href='/feed'>View</a";
 
             } catch (\Exception $e) {
-                    dd($e);
+                    // dd($e);
                     abort(404, 'Rss Feed Not Working');
             }
         } elseif ($website->type_of_feed == 'atom') {
@@ -92,6 +92,7 @@ class FeedController extends Controller
 
         foreach ($websites as $website) {
             if ($website->type_of_feed == 'rss') {
+                $failed_rss = "";
                 try {
                     $rss = \Feed::loadRss($website->feed_url);
                     // retrieve the data and store in the feed database // loop through the items
@@ -104,6 +105,8 @@ class FeedController extends Controller
                         } else {
                             $content = $item->description;
                         }
+
+                        $failed_rss = $website->feed_url;
 
                         $feed = Feed::create([
                             'website_id'    => $website->id,
@@ -121,7 +124,7 @@ class FeedController extends Controller
                     // TODO
                     // Find a way to log the errors
                         // dd($e);
-                        // abort(404, 'Rss Feed Not Working');
+                        abort(404, "Rss Feed Not Working ($failed_rss)");
                 }
             } elseif ($website->type_of_feed == 'atom') {
                 abort(404, 'Atom Feed Not Supported. Check back later');

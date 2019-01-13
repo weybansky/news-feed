@@ -49,7 +49,7 @@ class FeedController extends Controller
                 return "Successfully added the Feed <a href='/feed'>View</a";
 
             } catch (\Exception $e) {
-                    // dd($e);
+                    dd($e);
                     abort(404, 'Rss Feed Not Working');
             }
         } elseif ($website->type_of_feed == 'atom') {

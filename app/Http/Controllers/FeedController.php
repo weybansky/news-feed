@@ -49,8 +49,9 @@ class FeedController extends Controller
                 return "Successfully added the Feed <a href='/feed'>View</a";
 
             } catch (\Exception $e) {
-                    dd($e);
-                    abort(404, 'Rss Feed Not Working');
+                    // dd($e);
+                    // abort(404, 'Rss Feed Not Working');
+                    abort(404, $e);
             }
         } elseif ($website->type_of_feed == 'atom') {
             abort(404, 'Atom Feed Not Supported');
@@ -124,7 +125,8 @@ class FeedController extends Controller
                     // TODO
                     // Find a way to log the errors
                         // dd($e);
-                        abort(404, "Rss Feed Not Working ($failed_rss)");
+                        // abort(404, "Rss Feed Not Working");
+                        abort(404, $e);
                 }
             } elseif ($website->type_of_feed == 'atom') {
                 abort(404, 'Atom Feed Not Supported. Check back later');

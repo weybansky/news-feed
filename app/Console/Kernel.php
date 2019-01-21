@@ -26,6 +26,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
                  // ->everyMinute();
+        $schedule->command('feed:run')
+                ->timezone('Africa/Lagos')
+                ->everyFifteenMinutes();
     }
 
     /**

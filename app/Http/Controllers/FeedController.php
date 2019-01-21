@@ -35,6 +35,7 @@ class FeedController extends Controller
                     } else {
                         $content = $item->description;
                     }
+
                     $feed = Feed::create([
                         'website_id'    => $website->id,
                         'category_id'   => $website->category->id,

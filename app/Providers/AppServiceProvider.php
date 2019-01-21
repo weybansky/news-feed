@@ -21,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(['*'], function ($view) {
             $view->with('categories', Category::orderBy('name')->get());
         });
+
+        // Setting timezone
+        date_default_timezone_set('Africa/Lagos');
     }
 
     /**

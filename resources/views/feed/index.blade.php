@@ -24,7 +24,7 @@
 									<img class="img-fluid" src="images/admin.jpg" alt="">
 								</div>
 								<div class="col-8 col-sm-8 col-md-9 pl-1">
-									<p class="card-title m-0"><a href="{{ $feed->post_url }}">{{substr($feed->post_title, 0, 50)}}...</a></p>
+									<p class="card-title m-0"><a href="{{ $feed->post_url }}">{{ str_limit($feed->post_title, 50) }}</a></p>
 								</div>
 							</div>
 						</div>

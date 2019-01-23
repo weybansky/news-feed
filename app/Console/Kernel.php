@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        // Commands\FeedRun::class
     ];
 
     /**
@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
                  // ->everyMinute();
         $schedule->command('feed:run')
                 ->timezone('Africa/Lagos')
-                ->everyFifteenMinutes();
+                ->everyTenMinutes();
     }
 
     /**

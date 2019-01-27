@@ -65,7 +65,7 @@ class FeedRun extends Command
                             'category_id'   => $website->category->id,
                             'post_title'    => $item->title,
                             'post_url'      => $item->link,
-                            'pub_date'      => date('Y-m-d h:i:s' ,(int) $item->timestamp),
+                            'pub_date'      => date('Y-m-d H:i:s' ,(int) $item->timestamp),
                             'post_content'  => $content,
                             'post_id'       => $item->guid,
                             'post_picture'  => null,

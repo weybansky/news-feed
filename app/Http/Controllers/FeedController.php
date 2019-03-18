@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Feed;
 use App\Website;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FeedController extends Controller
@@ -14,7 +15,8 @@ class FeedController extends Controller
     }
 
     public function index () {
-        $feeds = Feed::latest('pub_date')->get();
+        // $feeds = Feed::latest('pub_date')->get();
+        $feeds = Feed::where('pub_date', '>', Carbon::today()->subDay(5))->orderBy('pub_date', 'desc')->paginate(12);
         return view('feed.index', compact('feeds'));
     }
     

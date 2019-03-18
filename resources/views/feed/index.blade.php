@@ -32,6 +32,12 @@
 				@endforeach
 			</div>
 
+			<div class="row justify-content-center">
+				<div class="col-md-6">
+					{{ $feeds->links() }}
+				</div>
+			</div>
+
 			<div class="row" style="display: none;">
 				{{-- feed icon
 				feed title

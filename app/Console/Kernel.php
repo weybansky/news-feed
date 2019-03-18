@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
                  // ->everyMinute();
         $schedule->command('feed:run')
                 ->timezone('Africa/Lagos')
-                ->everyTenMinutes();
+                ->everyFifteenMinutes();
     }
 
     /**

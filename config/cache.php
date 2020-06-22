@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 return [
 
     /*
@@ -13,7 +15,7 @@ return [
     |
     | Supported: "apc", "array", "database", "file", "memcached", "redis"
     |
-    */
+     */
 
     'default' => env('CACHE_DRIVER', 'file'),
 
@@ -26,7 +28,7 @@ return [
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
     |
-    */
+     */
 
     'stores' => [
 
@@ -73,6 +75,15 @@ return [
             'connection' => 'cache',
         ],
 
+        'dynamodb' => [
+            'driver' => 'dynamodb',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
+            'endpoint' => env('DYNAMODB_ENDPOINT'),
+        ],
+
     ],
 
     /*
@@ -84,11 +95,11 @@ return [
     | be other applications utilizing the same cache. So, we'll specify a
     | value to get prefixed to all our keys so we can avoid collisions.
     |
-    */
+     */
 
     'prefix' => env(
         'CACHE_PREFIX',
-        str_slug(env('APP_NAME', 'laravel'), '_').'_cache'
+        Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache'
     ),
 
 ];

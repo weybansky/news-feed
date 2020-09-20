@@ -27,6 +27,7 @@ class FeedController extends Controller
             try {
                 $rss = \Feed::loadRss($website->feed_url);
                 // retrieve the data and store in the database // loop through the items
+                dd($rss);
                 foreach ($rss->item as $item) {
                     // Skips current iteration if it exists
                     if (count(Feed::select('*')->where('post_url', $item->link)->get())) { continue; }
@@ -51,8 +52,8 @@ class FeedController extends Controller
                 return "Successfully added the Feed <a href=". url("/feed"). ">View</a>";
 
             } catch (\Exception $e) {
-                    abort(404, 'Rss Feed Not Working');
-                    // abort(404, $e);
+                    // abort(404, 'Rss Feed Not Working');
+                    abort(404, $e);
             }
         } elseif ($website->type_of_feed == 'atom') {
             abort(404, 'Atom Feed Not Supported');

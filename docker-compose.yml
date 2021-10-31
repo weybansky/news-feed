@@ -1,0 +1,66 @@
+version: "3.9"
+
+networks:
+  news-feed.test:
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker-files/nginx.dockerfile
+    # container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - news-feed.test
+
+  mysql:
+    image: mysql:5.7.36
+    # container_name: mysql
+    restart: always
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker-files/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: news-feed
+      MYSQL_USER: news-feed
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - news-feed.test
+
+  php:
+    build:
+      args: 
+        user: news-feed
+        uid: 1000
+      context: .
+      dockerfile: docker-files/Dockerfile
+    # container_name: php
+    image: weybansky/laravelbasic:php7.3
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - news-feed.test
+
+  npm:
+    image: node:16.4.0
+    # container_name: npm
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['npm']
+    networks:
+      - news-feed.test
